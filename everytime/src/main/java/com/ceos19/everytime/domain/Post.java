@@ -1,8 +1,6 @@
 package com.ceos19.everytime.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -45,7 +43,7 @@ public class Post extends BaseTimeEntity {  //게시물
     private List<Heart> hearts = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-    private List<Image> images = new ArrayList<>();
+    private List<Attachment> attachments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
@@ -64,9 +62,9 @@ public class Post extends BaseTimeEntity {  //게시물
     /**
      * 연관관계 편의 메서드
      */
-    public void addImage(Image image) {
-        image.setPost(this);
-        images.add(image);
+    public void addImage(Attachment attachment) {
+        attachment.setPost(this);
+        attachments.add(attachment);
     }
 
     // User, Heart, Post의 연관관계는 Post에서 관리함

@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       dialect: org.hibernate.dialect.MySQL8InnoDBDialect
       hibernate:
@@ -19,3 +19,6 @@ logging:
   level:
     org.hibernate.SQL: debug
   #  org.hibernate.type: trace
+
+file:
+  dir: E:\ceos-study\everytime\attachment_file\

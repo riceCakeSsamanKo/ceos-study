@@ -18,7 +18,7 @@ public class Heart {  // 게시물 좋아요
     @Column(name = "heart_id")
     private Long id;
 
-    @ManyToOne(fetch = LAZY, cascade = ALL)
+    @ManyToOne(fetch = LAZY, cascade = PERSIST)
     @JoinColumn(name = "user_id")
     @Setter(value = PROTECTED)
     private User user;

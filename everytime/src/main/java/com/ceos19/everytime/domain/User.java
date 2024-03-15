@@ -55,22 +55,22 @@ public class User {  // 유저
         this.school = school;
     }
 
-    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = PERSIST, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = PERSIST, orphanRemoval = true) //유저가 제거되도 게시물의 좋아요는 유지됨.
+    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true) //유저가 제거되도 게시물의 좋아요는 유지됨.
     private List<Heart> hearts = new ArrayList<>();
 
     @OneToMany(mappedBy = "sender", cascade = ALL, orphanRemoval = true)
-    private List<SendMessage> sendMessages = new ArrayList<>();
+    private List<Message> sendMessages = new ArrayList<>();
 
     @OneToMany(mappedBy = "receiver", cascade = ALL, orphanRemoval = true)
-    private List<ReceiveMessage> receiveMessages = new ArrayList<>();
+    private List<Message> receiveMessages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
 
     /**
@@ -81,31 +81,32 @@ public class User {  // 유저
         posts.add(post);
     }
 
-    // User + 중간 테이블 + Message간의 연관관계를 매핑해주는 메서드
-
-    public void addSendMessage(Message message) {
-        SendMessage sendMessage = SendMessage.createSendMessage(message);
-
-        sendMessage.setSender(this);
-        sendMessages.add(sendMessage);
-    }
-    // User + 중간 테이블 + Message간의 연관관계를 매핑해주는 메서드
-    public void addReceiveMessage(Message message) {
-        ReceiveMessage receiveMessage = ReceiveMessage.createReceiveMessage(message);
-
-        receiveMessage.setReceiver(this);
-        receiveMessages.add(receiveMessage);
+    public Post createPost(String title, String content) {
+        Post post = new Post(title, content);
+        addPost(post);
+        return post;
     }
 
-    // 게시물의 댓글은 User에서 다룸
-    public void addCommentToPost(Post post, String commentContent) {
-        Comment comment = Comment.createComment(post, commentContent);
+    // User + 중간 테이블 + Message간의 연관관계를 매핑해주는 메서드
+
+    protected void addSendMessage(Message message) {
+        message.setSender(this);
+        sendMessages.add(message);
+    }
+    // User + 중간 테이블 + Message간의 연관관계를 매핑해주는 메서드
+    protected void addReceiveMessage(Message message) {
+        message.setReceiver(this);
+        receiveMessages.add(message);
+    }
+
+    // Post에서 User를 파라미터로 받아 comment 다는 경우
+    protected void addComment(Comment comment) {
         comment.setUser(this);
         comments.add(comment);
     }
-    // 댓글의 대댓글은 User에서 다룸
-    public void addReplyToComment(Comment comment, String replyContent) {
-        Reply reply = Reply.createReply(comment, replyContent);
+
+    // Comment에서 User를 파라미터로 받아 Reply를 다는 경우
+    protected void addReply(Reply reply) {
         reply.setUser(this);
         replies.add(reply);
     }

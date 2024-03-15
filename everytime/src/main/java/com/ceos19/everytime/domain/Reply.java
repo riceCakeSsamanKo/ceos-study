@@ -21,12 +21,12 @@ public class Reply extends BaseTimeEntity {  // 대댓글
 
     private String content;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = PERSIST)
     @JoinColumn(name = "user_id")
     @Setter(value = PROTECTED)
     private User user;
 
-    @ManyToOne(fetch = LAZY, cascade = ALL)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "comment_id")
     @Setter(value = PROTECTED)
     private Comment comment;
@@ -35,9 +35,9 @@ public class Reply extends BaseTimeEntity {  // 대댓글
         this.content = content;
     }
 
-    protected static Reply createReply(Comment comment, String content) {
+    protected static Reply createReply(User user, String content) {
         Reply reply = new Reply(content);
-        comment.addReply(reply);
+        user.addReply(reply);
 
         return reply;
     }

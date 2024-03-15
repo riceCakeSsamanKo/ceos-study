@@ -12,16 +12,16 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post,Long> {
     @Query("select p from Post p " +
-            "join fetch p.user u")
+            "left join fetch p.user u")
     List<Post> findAll();
 
     @Query("select p from Post p " +
-            "join fetch p.user u " +
+            "left join fetch p.user u " +
             "where p.id= :postId")
     Optional<Post> findById(@Param("postId")long postId);
 
     @Query("select p from Post p " +
-            "join fetch p.user u " +
+            "left join fetch p.user u " +
             "where p.title= :title")
     Optional<Post> findByTitle(@Param("title")String title);
 }

@@ -7,16 +7,16 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
-@Builder
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @Entity
 @ToString(exclude = {"user", "hearts", "comments", "images"})
 public class Post extends BaseTimeEntity {  //게시물
@@ -51,8 +51,23 @@ public class Post extends BaseTimeEntity {  //게시물
     private List<Comment> comments = new ArrayList<>();
 
     /**
+     * 조회 메서드
+     */
+    public List<Comment> getCommentsByContent(String content) {
+        return comments.stream()
+                .filter(r -> r.getContent().equals(content))
+                .collect(Collectors.toList());
+    }
+
+
+
+    /**
      * 연관관계 편의 메서드
      */
+    public void addImage(Image image) {
+        image.setPost(this);
+        images.add(image);
+    }
 
     // User, Heart, Post의 연관관계는 Post에서 관리함
     public void addHeartFromUser(User user) {
@@ -61,13 +76,35 @@ public class Post extends BaseTimeEntity {  //게시물
         hearts.add(heart);
     }
 
-    public void addImage(Image image) {
-        image.setPost(this);
-        images.add(image);
+    public void removeHeartFromUserAndPost(Heart heart) {  // 제거 메서드
+        hearts.remove(heart);
+        heart.getUser().getHearts().remove(heart);
     }
 
-    protected void addComment(Comment comment) {
+    public void removeHeartFromUserAndPost(User user) {  // 제거 메서드
+        Optional<Heart> heartByUser = getHeartByUser(user);
+        if (heartByUser.isEmpty()) {
+            return;
+        }
+        Heart heart = heartByUser.get();
+        hearts.remove(heart);
+        heart.getUser().getHearts().remove(heart);
+    }
+    private Optional<Heart> getHeartByUser(User user) {
+        return hearts.stream()
+                .filter(h -> h.getUser().equals(user))
+                .findFirst();
+    }
+
+    // Post에서 User를 파라미터로 받아 Comment 다는 경우
+    public void addCommentFromUser(User user, String commentContent) {
+        Comment comment = Comment.createComment(user, commentContent);
         comment.setPost(this);
         comments.add(comment);
+    }
+
+    public void removeCommentFromUserAndPost(Comment comment) {  // 제거 메서드
+        comments.remove(comment);
+        comment.getUser().getComments().remove(comment);
     }
 }

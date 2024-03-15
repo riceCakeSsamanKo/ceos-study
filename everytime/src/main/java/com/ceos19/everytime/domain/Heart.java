@@ -34,5 +34,4 @@ public class Heart {  // 게시물 좋아요
 
         return heart;
     }
-
 }

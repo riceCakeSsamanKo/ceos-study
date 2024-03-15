@@ -26,7 +26,7 @@ public class InitDB {
 //        initService.commentAndReplyInit();
 //        initService.heartInit();
 //        initService.messageInit();
-//        initService.messageTest();
+        initService.messageTest();
 //        initService.removePost();
 //        initService.removeUser();
 //        initService.removeComment();
@@ -97,9 +97,16 @@ public class InitDB {
 
         public void messageTest() {
             User sender = userRepository.findByName("user1").get();
+            User receiver = userRepository.findByName("user2").get();
+
             List<Message> sendMessages = sender.getSendMessages();
+            List<Message> receiveMessages = receiver.getReceiveMessages();
+
             for (Message sendMessage : sendMessages) {
                 System.out.println("sendMessage = " + sendMessage);
+            }
+            for (Message receiveMessage : receiveMessages) {
+                System.out.println("receiveMessage = " + receiveMessage);
             }
         }
 

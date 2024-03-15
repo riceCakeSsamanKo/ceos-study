@@ -30,13 +30,14 @@ public class Message {  // 쪽지, message는 user의 비즈니스 연관관계 
 
     @ManyToOne(fetch = LAZY)
     @Setter(value = PROTECTED)
+    @JoinColumn(name = "sender_id")
     private User sender;
 
     @ManyToOne(fetch = LAZY)
     @Setter(value = PROTECTED)
+    @JoinColumn(name = "receiver_id")
     private User receiver;
-
-
+    
     public Message(String title, String content) {
         this.title = title;
         this.content = content;

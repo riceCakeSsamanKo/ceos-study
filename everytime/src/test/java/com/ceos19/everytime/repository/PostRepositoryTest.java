@@ -31,8 +31,8 @@ public class PostRepositoryTest {
 
     @Before
     public void each() {
-        user = new User("user1", 1231451254, "asdf@asdf.com", "asdf");
-        user2 = new User("user2", 14145, "asdfasfd@asdf.com", "asdf");
+        user = new User("user1", "a123456", "asdf@asdf.com", "asdf");
+        user2 = new User("user2", "a654321", "asdfasfd@asdf.com", "asdf");
         post = new Post("title", "content");
 
         userRepository.save(user);

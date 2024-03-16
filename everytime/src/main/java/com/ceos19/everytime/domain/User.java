@@ -27,7 +27,7 @@ public class User {  // 유저
     private String name;
 
     @Column(nullable = false, unique = true)
-    private int studentNo;
+    private String studentNo;
 
     @Email
     @Column(unique = true, nullable = false)
@@ -40,14 +40,14 @@ public class User {  // 유저
     @Setter(value = PROTECTED)
     private School school;
 
-    public User(String name, int studentNo, String username, String password) {
+    public User(String name, String studentNo, String username, String password) {
         this.name = name;
         this.studentNo = studentNo;
         this.username = username;
         this.password = password;
     }
 
-    public User(String name, int studentNo, String username, String password, School school) {
+    public User(String name, String studentNo, String username, String password, School school) {
         this.name = name;
         this.studentNo = studentNo;
         this.username = username;

@@ -26,7 +26,7 @@ public class InitDB {
 //        initService.commentAndReplyInit();
 //        initService.heartInit();
 //        initService.messageInit();
-        initService.messageTest();
+//        initService.messageTest();
 //        initService.removePost();
 //        initService.removeUser();
 //        initService.removeComment();
@@ -51,8 +51,8 @@ public class InitDB {
 
         public void userAndPostInit() {
             School school = schoolRepository.findByName("school").get();
-            User user1 = new User("user1", 142, "um312m1@asdf.com", "asdf1", school);
-            User user2 = new User("user2", 1234, "um51m2@asdf.com", "asdf2", school);
+            User user1 = new User("testUser1", "10000", "10000@asdf.com", "asdf1", school);
+            User user2 = new User("testUser2", "10001", "10001@asdf.com", "asdf2", school);
             user1.createPost("title", "content...");
             userRepository.save(user1);
             userRepository.save(user2);

@@ -19,7 +19,7 @@ class PostTest {
 
     @BeforeEach
     public void each(){
-        user = new User("user", 11111, "asdf@naver.com", "asdf");
+        user = new User("user", "11111", "asdf@naver.com", "asdf");
         post = new Post("post1", "content1");
     }
 

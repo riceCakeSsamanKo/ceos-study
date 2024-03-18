@@ -42,10 +42,6 @@ public class Comment extends BaseTimeEntity {  // 댓글
 
     @OneToMany(mappedBy = "comment", cascade = ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
-    //reply를 comment로 수정할 것.
-    /*@ManyToOne
-    @JoinColumn(name = "parent_comment_id")
-    private Comment parentComment;*/
 
     public List<Reply> getRepliesByContent(String content) {
         return replies.stream()

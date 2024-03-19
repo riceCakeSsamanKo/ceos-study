@@ -44,7 +44,7 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = ALL)
     private List<Attachment> attachments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = ALL)
     private List<Comment> comments = new ArrayList<>();
 
 }

@@ -24,7 +24,7 @@ public class MessageBox {
     @Column(name = "message_box_id")
     private Long id;
 
-    @OneToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

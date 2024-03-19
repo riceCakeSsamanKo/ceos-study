@@ -148,6 +148,12 @@ public class Message { // 쪽지, message는 user의 비즈니스 연관관계 �
 ~~~
 6. 유지 보수간의 문제를 최소화하기 위해서 setter의 사용은 최대한 배제하였다.
 
+# fetch join 할 때 distinct를 안하면 생길 수 있는 문제
+일대다 관계에서 다에 속한 테이블을 fetch join으로 조회시에 각각의 컬렉션 엔티티에 속한 엔티티가 중복 조회되는 문제 발생
+Team : Member = 일대다
+query = "select t from Team t join fetch t.members"라는 쿼리로 조회를 하는 경우 만일 해당 team에 3개의 member가 조인된 경우
+team이 세번 조회되는 문제가 발생함.
+따라서 이 경우 query = "select t from Team t distinct join fetch t.members"
 
 # 요구사항 분석
 
@@ -208,3 +214,4 @@ public class Message { // 쪽지, message는 user의 비즈니스 연관관계 �
 - 등록이름
 - 원본이름
 - 파일타입
+![img_1.png](img_1.png)

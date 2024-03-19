@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -32,6 +33,6 @@ public class TimeTable extends BaseTimeEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "timeTable", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "timeTable", cascade = PERSIST)
     private List<Course> courses = new ArrayList<>();
 }

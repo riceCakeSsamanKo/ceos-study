@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @NoArgsConstructor
@@ -21,4 +25,7 @@ public class School {
     private String name;
     @Column(nullable = false, length = 20)
     private String department;
+
+    @OneToMany(mappedBy = "school", cascade = ALL)
+    private List<Board> boards = new ArrayList<>();
 }

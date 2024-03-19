@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -12,7 +16,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Getter
 @Entity
 @ToString
-public class Post extends BaseTimeEntity{
+public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "post_id")
@@ -31,6 +35,16 @@ public class Post extends BaseTimeEntity{
     private User author;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "umjoonsik")
+    @JoinColumn(name = "board_id")
     private Board board;
-}  
+
+    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+    private List<PostLike> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = ALL)
+    private List<Attachment> attachments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
+}

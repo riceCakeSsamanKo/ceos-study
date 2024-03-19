@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       dialect: org.hibernate.dialect.MySQL8InnoDBDialect
       hibernate:

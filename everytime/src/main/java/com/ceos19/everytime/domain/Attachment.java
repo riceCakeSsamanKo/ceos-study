@@ -33,7 +33,6 @@ public class Attachment {  // 게시물에 달 사진
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
-    @Setter(value = PROTECTED)
     private Post post;
 
     @Builder

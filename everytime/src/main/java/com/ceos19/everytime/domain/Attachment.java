@@ -31,6 +31,13 @@ public class Attachment {  // 게시물에 달 사진
     @Enumerated(STRING)
     private AttachmentType attachmentType;
 
+    public Attachment(String originalFileName, String storedFileName, AttachmentType attachmentType, Post post) {
+        this.originalFileName = originalFileName;
+        this.storedFileName = storedFileName;
+        this.attachmentType = attachmentType;
+        this.post = post;
+    }
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
     private Post post;

@@ -38,6 +38,15 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "board_id")
     private Board board;
 
+    public Post(String title, String content, boolean isQuestion, boolean isAnonymous, User author, Board board) {
+        this.title = title;
+        this.content = content;
+        this.isQuestion = isQuestion;
+        this.isAnonymous = isAnonymous;
+        this.author = author;
+        this.board = board;
+    }
+
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private List<PostLike> likes = new ArrayList<>();
 

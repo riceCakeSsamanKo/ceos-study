@@ -34,5 +34,6 @@ public class TimeTable extends BaseTimeEntity{
     private User user;
 
     @OneToMany(mappedBy = "timeTable", cascade = PERSIST)
-    private List<Course> courses = new ArrayList<>();
+    private List<TimeTableCourse> timeTableCourses = new ArrayList<>();
+
 }

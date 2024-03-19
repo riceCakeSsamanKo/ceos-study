@@ -26,6 +26,11 @@ public class School {
     @Column(nullable = false, length = 20)
     private String department;
 
+    public School(String name, String department) {
+        this.name = name;
+        this.department = department;
+    }
+
     @OneToMany(mappedBy = "school", cascade = ALL)
     private List<Board> boards = new ArrayList<>();
 }

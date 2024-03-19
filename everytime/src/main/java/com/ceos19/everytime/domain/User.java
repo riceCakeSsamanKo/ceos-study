@@ -44,6 +44,15 @@ public class User {
     @JoinColumn(name = "school_id")
     private School school;
 
+    public User(String username, String password, String name, String studentNo, String email, School school) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.studentNo = studentNo;
+        this.email = email;
+        this.school = school;
+    }
+
     @OneToMany(mappedBy = "author", cascade = ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 

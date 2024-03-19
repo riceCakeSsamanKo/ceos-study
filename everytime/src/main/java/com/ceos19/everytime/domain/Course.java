@@ -33,9 +33,8 @@ public class Course {
     private String room;
     private int popularity;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "time_table_id")
-    private TimeTable timeTable;
+    @OneToMany(mappedBy = "course", cascade = PERSIST)
+    private List<TimeTableCourse> timeTableCourses;
 
     @OneToMany(mappedBy = "course", cascade = PERSIST)
     private List<ClassTime> times = new ArrayList<>();

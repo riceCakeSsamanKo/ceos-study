@@ -31,7 +31,17 @@ public class Course {
     private int credit;
     @Column(nullable = false, length = 50)
     private String room;
-    private int popularity;
+
+    private int popularity = 0;
+
+    public Course(String course_number, String name, int openingGrade, String professorName, int credit, String room) {
+        this.course_number = course_number;
+        this.name = name;
+        this.openingGrade = openingGrade;
+        this.professorName = professorName;
+        this.credit = credit;
+        this.room = room;
+    }
 
     @OneToMany(mappedBy = "course", cascade = PERSIST)
     private List<TimeTableCourse> timeTableCourses;

@@ -11,14 +11,12 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Getter
 @Entity
 @ToString
-public class School {
+public class Board {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "school_id")
+    @Column(name = "board_id")
     private Long id;
 
-    @Column(nullable = false, length = 15)
+    @Column(nullable = false, length = 100)
     private String name;
-    @Column(nullable = false, length = 20)
-    private String department;
 }

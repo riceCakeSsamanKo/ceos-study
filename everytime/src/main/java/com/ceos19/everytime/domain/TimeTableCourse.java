@@ -1,9 +1,9 @@
 package com.ceos19.everytime.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -20,9 +20,15 @@ public class TimeTableCourse {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "time_table_id")
+    @Setter(value = PROTECTED)
     private TimeTable timeTable;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
+
+    protected TimeTableCourse(TimeTable timeTable, Course course) {
+        this.timeTable = timeTable;
+        this.course = course;
+    }
 }

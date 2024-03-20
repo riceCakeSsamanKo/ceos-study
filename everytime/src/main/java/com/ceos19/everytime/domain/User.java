@@ -2,13 +2,11 @@ package com.ceos19.everytime.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.*;
@@ -44,6 +42,7 @@ public class User {
     @JoinColumn(name = "school_id")
     private School school;
 
+    @Builder
     public User(String username, String password, String name, String studentNo, String email, School school) {
         this.username = username;
         this.password = password;
@@ -55,13 +54,4 @@ public class User {
 
     @OneToMany(mappedBy = "author", cascade = ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "commenter", cascade = ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
-    private List<TimeTable> timeTables = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
-    private List<MessageBox> messageBoxes = new ArrayList<>();
 }

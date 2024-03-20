@@ -1,7 +1,6 @@
 package com.ceos19.everytime.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -18,16 +17,25 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Entity
 @ToString
-public class MessageBox {
+public class ChattingRoom {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "message_box_id")
+    @Column(name = "chatting_room_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "participant1_id")
+    private User participant1;
 
-    @OneToMany(mappedBy = "messageBox", cascade = ALL, orphanRemoval = true)
-    private List<Message> conversations = new ArrayList<>();
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "participant2_id")
+    private User participant2;
+
+    @OneToMany(mappedBy = "chattingRoom", cascade = ALL, orphanRemoval = true)
+    private List<Chat> chats = new ArrayList<>();
+
+    public void addChat(Chat chat) {
+        chat.setChattingRoom(this);
+        chats.add(chat);
+    }
 }

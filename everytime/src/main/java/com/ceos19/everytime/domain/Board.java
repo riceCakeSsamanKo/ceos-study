@@ -28,7 +28,4 @@ public class Board {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "school_id")
     private School school;
-
-    @OneToMany(mappedBy = "board", cascade = ALL)
-    private List<Post> posts = new ArrayList<>();
 }

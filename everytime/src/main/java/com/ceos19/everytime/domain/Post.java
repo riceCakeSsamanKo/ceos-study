@@ -1,6 +1,7 @@
 package com.ceos19.everytime.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -38,6 +39,7 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "board_id")
     private Board board;
 
+    @Builder
     public Post(String title, String content, boolean isQuestion, boolean isAnonymous, User author, Board board) {
         this.title = title;
         this.content = content;
@@ -46,14 +48,13 @@ public class Post extends BaseTimeEntity {
         this.author = author;
         this.board = board;
     }
+    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private List<PostLike> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = ALL)
     private List<Attachment> attachments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post", cascade = ALL)
-    private List<Comment> comments = new ArrayList<>();
-
+    
 }

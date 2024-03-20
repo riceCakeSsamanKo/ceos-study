@@ -1,9 +1,7 @@
 package com.ceos19.everytime.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -16,10 +14,10 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Entity
 @ToString
-public class Message extends BaseTimeEntity{
+public class Chat{
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "message_id")
+    @Column(name = "chat_id")
     private Long id;
 
     @Column(nullable = false, length = 1000)
@@ -29,15 +27,19 @@ public class Message extends BaseTimeEntity{
     private LocalDateTime sentAt;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "sender_id")
-    private User sender;
+    @JoinColumn(name = "author_id")
+    private User author;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "receiver_id")
-    private User receiver;
+    @JoinColumn(name = "conversation_id")
+    @Setter(value = PROTECTED)
+    private ChattingRoom chattingRoom;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "message_box_id")
-    private MessageBox messageBox;
+    @Builder
+    public Chat(String content, LocalDateTime sentAt, User author) {
+        this.content = content;
+        this.sentAt = sentAt;
+        this.author = author;
+    }
 }
 

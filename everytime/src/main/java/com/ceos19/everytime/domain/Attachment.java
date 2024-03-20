@@ -12,14 +12,10 @@ import static lombok.AccessLevel.*;
 @Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SequenceGenerator(
-        name = "ATTACHMENT_SEQ_GENERATOR",
-        sequenceName = "ATTACHMENT_SEQ"
-)
 @ToString(exclude = "post")
 public class Attachment {  // 게시물에 달 사진
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "attachment_id")
     private Long id;
 

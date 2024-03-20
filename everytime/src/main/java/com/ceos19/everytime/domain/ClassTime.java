@@ -1,11 +1,7 @@
 package com.ceos19.everytime.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.hibernate.query.sql.internal.ParameterRecognizerImpl;
+import lombok.*;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
@@ -28,4 +24,11 @@ public class ClassTime {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
+
+    @Builder
+    protected ClassTime(Weekend dayOfWeek, int timePeriod, Course course) {
+        this.dayOfWeek = dayOfWeek;
+        this.timePeriod = timePeriod;
+        this.course = course;
+    }
 }

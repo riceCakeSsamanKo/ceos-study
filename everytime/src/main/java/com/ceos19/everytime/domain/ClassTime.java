@@ -10,7 +10,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@ToString
+@ToString(exclude = {"course"})
 public class ClassTime {
     @Id
     @GeneratedValue(strategy = IDENTITY)

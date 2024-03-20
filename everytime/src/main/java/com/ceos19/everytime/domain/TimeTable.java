@@ -5,7 +5,9 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -39,12 +41,4 @@ public class TimeTable extends BaseTimeEntity {
         this.user = user;
     }
 
-    @OneToMany(mappedBy = "timeTable", cascade = PERSIST)
-    private List<TimeTableCourse> timeTableCourses = new ArrayList<>();
-
-    // timeTable이 먼저 persist된 이후에 addCourse 해야함
-    public void addCourse(Course course) {
-        TimeTableCourse timeTableCourse = new TimeTableCourse(this, course);
-        timeTableCourses.add(timeTableCourse);
-    }
 }

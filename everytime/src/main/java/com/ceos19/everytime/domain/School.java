@@ -30,7 +30,4 @@ public class School {
         this.name = name;
         this.department = department;
     }
-
-    @OneToMany(mappedBy = "school", cascade = ALL)
-    private List<Board> boards = new ArrayList<>();
 }

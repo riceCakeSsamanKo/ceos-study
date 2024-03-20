@@ -31,15 +31,16 @@ public class Chat{
     private User author;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "conversation_id")
+    @JoinColumn(name = "chatting_room_id")
     @Setter(value = PROTECTED)
     private ChattingRoom chattingRoom;
 
     @Builder
-    public Chat(String content, LocalDateTime sentAt, User author) {
+    protected Chat(String content, User author, ChattingRoom chattingRoom) {
         this.content = content;
-        this.sentAt = sentAt;
         this.author = author;
+        this.sentAt = LocalDateTime.now();
+        this.chattingRoom = chattingRoom;
     }
 }
 

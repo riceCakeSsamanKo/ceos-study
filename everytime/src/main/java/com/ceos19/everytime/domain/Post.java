@@ -48,6 +48,7 @@ public class Post extends BaseTimeEntity {
         this.author = author;
         this.board = board;
     }
+
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
@@ -56,5 +57,4 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "post", cascade = ALL)
     private List<Attachment> attachments = new ArrayList<>();
-    
 }

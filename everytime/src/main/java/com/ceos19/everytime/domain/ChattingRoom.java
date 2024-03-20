@@ -31,11 +31,8 @@ public class ChattingRoom {
     @JoinColumn(name = "participant2_id")
     private User participant2;
 
-    @OneToMany(mappedBy = "chattingRoom", cascade = ALL, orphanRemoval = true)
-    private List<Chat> chats = new ArrayList<>();
-
-    public void addChat(Chat chat) {
-        chat.setChattingRoom(this);
-        chats.add(chat);
+    public ChattingRoom(User participant1, User participant2) {
+        this.participant1 = participant1;
+        this.participant2 = participant2;
     }
 }

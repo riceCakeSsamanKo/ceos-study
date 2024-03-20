@@ -25,9 +25,15 @@ public class TimeTableCourse {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "course_id")
+    @Setter(value = PROTECTED)
     private Course course;
 
-    protected TimeTableCourse(TimeTable timeTable, Course course) {
+    public TimeTableCourse(TimeTable timeTable, Course course) {
+        this.timeTable = timeTable;
+        this.course = course;
+    }
+
+    public void setTimeTableAndCourse(TimeTable timeTable, Course course) {
         this.timeTable = timeTable;
         this.course = course;
     }

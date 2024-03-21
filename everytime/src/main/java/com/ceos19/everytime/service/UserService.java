@@ -34,6 +34,6 @@ public class UserService {
         List<TimeTable> timeTables = timeTableRepository.findByUserId(user.getId());
         timeTableRepository.deleteAll(timeTables); // 연관된 TimeTableCourse도 cascade로 제거
 
-        
+
     }
 }

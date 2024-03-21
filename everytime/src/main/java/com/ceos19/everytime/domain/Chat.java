@@ -36,7 +36,7 @@ public class Chat{
     private ChattingRoom chattingRoom;
 
     @Builder
-    protected Chat(String content, User author, ChattingRoom chattingRoom) {
+    public Chat(String content, User author, ChattingRoom chattingRoom) {
         this.content = content;
         this.author = author;
         this.sentAt = LocalDateTime.now();

@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(attributePaths = {"school"})
     Optional<User> findByEmail(String email);
 
-    List<User> findBySchoolId(long schoolId);
+    List<User> findBySchoolId(Long schoolId);
 
     @EntityGraph(attributePaths = {"school"})
     List<User> findByName(String name);

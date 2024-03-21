@@ -11,9 +11,10 @@ import java.util.Optional;
 
 public interface TimeTableCourseRepository extends JpaRepository<TimeTableCourse,Long> {
     @EntityGraph(attributePaths = {"timeTable"})
-    List<TimeTableCourse> findByCourseId(Long courseId);  // 특정 Course로 조회
+    List<TimeTableCourse> findByCourseId(Long courseId);  // 특정 Course로 조회, 이걸 쓸지는 잘 모르겠다..
 
     @EntityGraph(attributePaths = {"course"})
     List<TimeTableCourse> findByTimeTableId(Long timeTableId);  // 특정 TimeTable로 조회
 
+    void deleteAllByTimeTableId(Long timeTableId);
 }

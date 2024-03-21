@@ -18,13 +18,19 @@ public class UserService {
     private final TimeTableCourseRepository timeTableCourseRepository;
     private final PostRepository postRepository;
     private final ChatRepository chatRepository;
+    private final CommentRepository commentRepository;
+
+    public Long join(User user) {
+        userRepository.save(user);
+        return user.getId();
+    }
 
     public void deleteUser(User user) {
         // 연관된 Chat 제거
-        List<ChattingRoom> chattingRooms = chattingRoomRepository.findByParticipant1IdOrParticipant2Id(user.getId());
+        List<ChattingRoom> chattingRooms =
+                chattingRoomRepository.findByParticipant1IdOrParticipant2Id(user.getId());
         for (ChattingRoom chattingRoom : chattingRooms) {
-            List<Chat> chats = chatRepository.findByChattingRoomId(chattingRoom.getId());
-            chatRepository.deleteAll(chats);
+            chatRepository.deleteAllByChattingRoomId(chattingRoom.getId());
         }
         // 연관된 ChattingRoom 제거
         chattingRoomRepository.deleteAll(chattingRooms);
@@ -32,16 +38,25 @@ public class UserService {
         // 연관된 TimeTableCourse 제거
         List<TimeTable> timeTables = timeTableRepository.findByUserId(user.getId());
         for (TimeTable timeTable : timeTables) {
-            List<TimeTableCourse> timeTableCourses = timeTableCourseRepository.findByTimeTableId(timeTable.getId());
-            timeTableCourseRepository.deleteAll(timeTableCourses);
+            timeTableCourseRepository.deleteAllByTimeTableId(timeTable.getId());
         }
         // 연관된 TimeTable 제거
         timeTableRepository.deleteAll(timeTables); // 연관된 TimeTableCourse도 cascade로 제거
 
-        //연관된 Post 제거
+        // 유저와 연관된 Comment 제거
+        List<Comment> comments = commentRepository.findByCommenterId(user.getId());
+        commentRepository.deleteAll(comments);
+
+        // Post와 연관된 Comment 제거
         List<Post> posts = postRepository.findByAuthorId(user.getId());
+        for (Post post : posts) {
+            List<Comment> commentsInPost = commentRepository.findByPostId(post.getId());
+            commentRepository.deleteAll(commentsInPost);
+        }
+        //연관된 Post 제거
         postRepository.deleteAll(posts);
 
-
+        // User 제거
+        userRepository.delete(user);
     }
 }

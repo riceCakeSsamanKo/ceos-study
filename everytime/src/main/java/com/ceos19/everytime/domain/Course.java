@@ -36,7 +36,7 @@ public class Course {
     private String room;
 
     @Builder
-    public Course(String courseNumber, String name, int openingGrade, String professorName, int credit, String room, ClassTime... classTimes) {
+    public Course(String courseNumber, String name, int openingGrade, String professorName, int credit, String room) {
         this.courseNumber = courseNumber;
         this.name = name;
         this.openingGrade = openingGrade;
@@ -44,18 +44,11 @@ public class Course {
         this.credit = credit;
         this.room = room;
 
-        for (ClassTime classTime : classTimes) {
-            addClassTime(classTime);
-        }
     }
 
     @OneToMany(mappedBy = "course", cascade = ALL, orphanRemoval = true)
     private List<ClassTime> classTimes = new ArrayList<>();
 
-    public void addClassTime(ClassTime classTime) {
-        classTime.setCourse(this);
-        classTimes.add(classTime);
-    }
 
     // Course를 먼저 persist 한 후 addClassTime을 진행햐야함
     public void addClassTime(Weekend dayOfWeek, int timePeriod) {

@@ -12,4 +12,6 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
 
     @EntityGraph(attributePaths = {"author"})
     List<Chat> findByAuthorId(Long authorID);
+
+    void deleteAllByChattingRoomId(Long chattingRoomId);
 }

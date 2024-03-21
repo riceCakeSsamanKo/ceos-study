@@ -22,27 +22,21 @@ public class Attachment {  // 게시물에 달 사진
     @Column(nullable = false)
     private String originalFileName;
     @Column(nullable = false)
-    private String storedFileName;
+    private String storedPath;
 
     @Enumerated(STRING)
     private AttachmentType attachmentType;
 
-    public Attachment(String originalFileName, String storedFileName, AttachmentType attachmentType, Post post) {
-        this.originalFileName = originalFileName;
-        this.storedFileName = storedFileName;
-        this.attachmentType = attachmentType;
-        this.post = post;
-    }
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
+    @Setter(value = PROTECTED)
     private Post post;
 
     @Builder
     public Attachment(Long id, String originFileName, String storePath, AttachmentType attachmentType) {
         this.id = id;
         this.originalFileName = originFileName;
-        this.storedFileName = storePath;
+        this.storedPath = storePath;
         this.attachmentType = attachmentType;
     }
 }

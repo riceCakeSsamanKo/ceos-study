@@ -59,4 +59,9 @@ public class Post extends BaseTimeEntity {
         PostLike postLike = new PostLike(this, user);
         postLikes.add(postLike);
     }
+
+    public void addAttachment(Attachment attachment) {
+        attachment.setPost(this);
+        attachments.add(attachment);
+    }
 }

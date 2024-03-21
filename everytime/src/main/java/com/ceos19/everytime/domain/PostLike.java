@@ -1,6 +1,7 @@
 package com.ceos19.everytime.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -25,4 +26,10 @@ public class PostLike {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Builder
+    protected PostLike(Post post, User user) {
+        this.post = post;
+        this.user = user;
+    }
 }

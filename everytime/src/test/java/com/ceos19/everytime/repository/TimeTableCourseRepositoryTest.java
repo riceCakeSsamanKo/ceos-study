@@ -1,12 +1,10 @@
-package com.ceos19.everytime.service;
+package com.ceos19.everytime.repository;
 
 import static com.ceos19.everytime.domain.Semester.FIRST;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.ceos19.everytime.domain.*;
-import com.ceos19.everytime.repository.*;
 import jakarta.persistence.EntityManager;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -16,13 +14,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Transactional
-class CourseServiceTest {
-    @Autowired
-    CourseService courseService;
+class TimeTableCourseRepositoryTest {
     @Autowired
     SchoolRepository schoolRepository;
     @Autowired
@@ -40,6 +37,7 @@ class CourseServiceTest {
     User userA;
     Course course1;
     Course course2;
+    TimeTable timeTable;
 
     @BeforeEach
     public void each(){
@@ -55,38 +53,17 @@ class CourseServiceTest {
         course1.addClassTime(Weekend.MON,2);
         course1.addClassTime(Weekend.TUE,4);
         course1.addClassTime(Weekend.TUE,5);
-        courseService.save(course1);
+        courseRepository.save(course1);
 
         course2.addClassTime(Weekend.FRI,5);
-        courseService.save(course2);
+        courseRepository.save(course2);
 
 //        course.getClassTimes().remove(0);
 
-        TimeTable timeTable = new TimeTable("timeTable1", 2024, FIRST, userA);
+        timeTable = new TimeTable("timeTable1", 2024, FIRST, userA);
         timeTableRepository.save(timeTable);
 
         timeTableCourseRepository.save(new TimeTableCourse(timeTable, course1));
         timeTableCourseRepository.save(new TimeTableCourse(timeTable, course2));
-    }
-
-    @Test
-    public void deleteCourseTest() throws Exception{
-        //given
-        System.out.println("course2 = " + course2);
-        courseService.deleteCourseById(course2.getId());
-
-        //when
-        TimeTable timeTable = timeTableRepository.findByUserId(userA.getId()).get(0);
-
-        //then
-        List<TimeTableCourse> byCourseId = timeTableCourseRepository.findByCourseId(course1.getId());
-        for (TimeTableCourse timeTableCourse : byCourseId) {
-            System.out.println("course timeTableCourse = " + timeTableCourse.getCourse());
-        }
-
-        List<TimeTableCourse> byTimeTableId = timeTableCourseRepository.findByTimeTableId(timeTable.getId());
-        for (TimeTableCourse timeTableCourse : byTimeTableId) {
-            System.out.println("timetable timeTableCourse = " + timeTableCourse.getCourse());
-        }
     }
 }

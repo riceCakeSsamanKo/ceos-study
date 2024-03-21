@@ -51,10 +51,4 @@ public class User {
         this.email = email;
         this.school = school;
     }
-
-    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
-    private List<TimeTable> timeTables = new ArrayList<>();
-
-    @OneToMany(mappedBy = "author", cascade = ALL, orphanRemoval = true)
-    private List<Post> posts = new ArrayList<>();
 }

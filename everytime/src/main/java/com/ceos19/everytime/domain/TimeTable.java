@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -25,18 +26,24 @@ public class TimeTable extends BaseTimeEntity {
 
     @Column(nullable = false, length = 50)
     private String name;
-    @Column(nullable = false, length = 50)
-    private String semester;
 
-    @ManyToOne(fetch = LAZY)
+    @Column(nullable = false)
+    private int year;
+
+    @Enumerated(STRING)
+    @Column(nullable = false)
+    private Semester semester;
+
+    @ManyToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "user_id")
     @Setter(value = PROTECTED)
     @ToString.Exclude
     private User user;
 
     @Builder
-    public TimeTable(String name, String semester, User user) {
+    public TimeTable(String name, int year, Semester semester, User user) {
         this.name = name;
+        this.year = year;
         this.semester = semester;
         this.user = user;
     }

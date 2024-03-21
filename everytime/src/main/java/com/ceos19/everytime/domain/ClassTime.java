@@ -6,8 +6,9 @@ import lombok.*;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = PROTECTED)
 @Getter
 @Entity
 @ToString(exclude = {"course"})
@@ -23,6 +24,7 @@ public class ClassTime {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "course_id")
+    @Setter(value = PROTECTED)
     private Course course;
 
     @Builder

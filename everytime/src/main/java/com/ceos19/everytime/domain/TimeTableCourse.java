@@ -32,9 +32,4 @@ public class TimeTableCourse {
         this.timeTable = timeTable;
         this.course = course;
     }
-
-    public void setTimeTableAndCourse(TimeTable timeTable, Course course) {
-        this.timeTable = timeTable;
-        this.course = course;
-    }
 }

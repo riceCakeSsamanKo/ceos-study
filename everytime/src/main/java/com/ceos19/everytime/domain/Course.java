@@ -22,9 +22,8 @@ public class Course {
     @Column(name = "course_id")  // PK 값을 학수 번호로 설정
     private Long id;
 
-
     @Column(nullable = false, length = 20)
-    private String course_number;
+    private String courseNumber;
     @Column(nullable = false, length = 30)
     private String name;
     @Column(nullable = false)
@@ -36,20 +35,27 @@ public class Course {
     @Column(nullable = false, length = 50)
     private String room;
 
-    private int popularity = 0;
-
     @Builder
-    public Course(String course_number, String name, int openingGrade, String professorName, int credit, String room) {
-        this.course_number = course_number;
+    public Course(String courseNumber, String name, int openingGrade, String professorName, int credit, String room, ClassTime... classTimes) {
+        this.courseNumber = courseNumber;
         this.name = name;
         this.openingGrade = openingGrade;
         this.professorName = professorName;
         this.credit = credit;
         this.room = room;
+
+        for (ClassTime classTime : classTimes) {
+            addClassTime(classTime);
+        }
     }
 
     @OneToMany(mappedBy = "course", cascade = ALL, orphanRemoval = true)
     private List<ClassTime> classTimes = new ArrayList<>();
+
+    public void addClassTime(ClassTime classTime) {
+        classTime.setCourse(this);
+        classTimes.add(classTime);
+    }
 
     // Course를 먼저 persist 한 후 addClassTime을 진행햐야함
     public void addClassTime(Weekend dayOfWeek, int timePeriod) {

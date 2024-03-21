@@ -9,10 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
-/**
- * deprecated
- */
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -47,5 +45,13 @@ public class TimeTableService {
 
         // timeTable 제거
         timeTableRepository.deleteById(timeTableId);
+    }
+
+    public TimeTable findByTimeTableId(Long timeTableId) {
+        Optional<TimeTable> optionalTimeTable = timeTableRepository.findById(timeTableId);
+        if (optionalTimeTable.isEmpty()) {
+            throw new NullPointerException("해당 TimeTable이 존재하지 않습니다");
+        }
+        return optionalTimeTable.get();
     }
 }

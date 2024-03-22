@@ -60,7 +60,8 @@ class TimeTableCourseRepositoryTest {
 
 //        course.getClassTimes().remove(0);
 
-        timeTable = new TimeTable("timeTable1", 2024, FIRST, userA);
+        timeTable = new TimeTable("timeTable1", 2024, FIRST);
+        timeTable.setUser(userA);
         timeTableRepository.save(timeTable);
 
         timeTableCourseRepository.save(new TimeTableCourse(timeTable, course1));

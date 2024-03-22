@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,5 +36,18 @@ public class CourseService {
 
         // Course 제거
         courseRepository.deleteById(courseId);
+    }
+
+    public List<Course> findByTimeTableId(Long timeTableId) {
+        List<TimeTableCourse> timeTableCourses = timeTableCourseRepository.findByTimeTableId(timeTableId);
+        List<Course> courses = new ArrayList<>();
+        for (TimeTableCourse timeTableCourse : timeTableCourses) {
+            Optional<Course> optionalCourse = courseRepository.findById(timeTableCourse.getCourse().getId());
+            if (optionalCourse.isPresent()) {
+                Course course = optionalCourse.get();
+                courses.add(course);
+            }
+        }
+        return courses;
     }
 }

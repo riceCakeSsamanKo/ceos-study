@@ -26,10 +26,12 @@ public class Comment extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
+    @Setter
     private User commenter;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
+    @Setter
     private Post post;
 
     @ManyToOne(fetch = LAZY)
@@ -49,5 +51,12 @@ public class Comment extends BaseTimeEntity {
         this.content = content;
         this.commenter = commenter;
         this.post = post;
+    }
+
+    // 연관관계 제거
+    public void removeRelation() {
+        commenter = null;
+        post = null;
+        parentComment = null;
     }
 }

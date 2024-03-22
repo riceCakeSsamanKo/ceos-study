@@ -66,25 +66,34 @@ class PostRepositoryTest {
                 .build();
 
         post.addAttachment(attachment);
-        post.addAttachment(attachment);
-
-        /*Comment comment1 = new Comment("ㅎㅇ요1", user1, post, null);
-        Comment comment2 = new Comment("ㅎㅇ요2", user1, post, null);
-        Comment comment3 = new Comment("ㅎㅇ요3", user1, post, null);
-        commentRepository.save(comment1);
-        commentRepository.save(comment2);
-        commentRepository.save(comment3);*/
-
         postRepository.save(post);
+
+
+        Comment comment1 = new Comment("ㅎㅇ요1", user1, post);
+        Comment comment2 = new Comment("ㅎㅇ요2", user1, post);
+        comment1.addReply(comment2);
+        Comment comment3 = new Comment("ㅎㅇ요3", user1, post);
+        commentRepository.save(comment1);
+        commentRepository.save(comment3);
     }
 
     @Test
-    public void 포스트조회() throws Exception{
+    public void 포스트제거() throws Exception{
         //given
         List<Post> byAuthorId = postRepository.findByAuthorId(user1.getId());
         for (Post post : byAuthorId) {
-            System.out.println("post.getId() = " + post.getId());
+            List<Comment> comments = commentRepository.findByPostId(post.getId());
+            for (Comment comment : comments) {
+                List<Comment> replies = comment.getReplies();
+                for (Comment reply : replies) {
+                    System.out.println("reply: "+reply.getId());
+                    reply.removeRelation();
+                }
+                comment.removeRelation();
+            }
+            commentRepository.deleteAll(comments);
         }
+
         postRepository.deleteAll(byAuthorId);
 
 
@@ -94,4 +103,5 @@ class PostRepositoryTest {
         }
         System.out.println(all.size());
     }
+
 }

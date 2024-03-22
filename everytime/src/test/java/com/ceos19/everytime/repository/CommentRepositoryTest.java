@@ -84,8 +84,6 @@ class CommentRepositoryTest {
         commentRepository.save(comment2);
 
         postRepository.save(post);
-        em.flush();
-        em.clear();
     }
 
     @Test
@@ -93,12 +91,7 @@ class CommentRepositoryTest {
         //given
         List<Comment> comments = commentRepository.findByPostId(post.getId());
         for (Comment comment : comments) {
-            System.out.println("comment = " + comment);
-            if (!comment.getReplies().isEmpty()) {
-                for (Comment reply : comment.getReplies()) {
-                    System.out.println("reply = " + reply);
-                }
-            }
+            comment.setPost(null);
         }
 
         for (Comment comment : comments) {

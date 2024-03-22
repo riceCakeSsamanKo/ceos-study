@@ -62,7 +62,8 @@ class CourseServiceTest {
 
 //        course.getClassTimes().remove(0);
 
-        TimeTable timeTable = new TimeTable("timeTable1", 2024, FIRST, userA);
+        TimeTable timeTable = new TimeTable("timeTable1", 2024, FIRST);
+        timeTable.setUser(userA);
         timeTableRepository.save(timeTable);
 
         timeTableCourseRepository.save(new TimeTableCourse(timeTable, course1));

@@ -51,4 +51,23 @@ public class User {
         this.email = email;
         this.school = school;
     }
+
+    /**
+     * 업데이트 로직
+     */
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
+    public void updateSchool(School school) {
+        this.school = school;
+    }
 }

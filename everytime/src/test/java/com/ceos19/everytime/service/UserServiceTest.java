@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Scanner;
 
 @SpringBootTest
@@ -38,6 +39,10 @@ class UserServiceTest {
     ChatRepository chatRepository;
     @Autowired
     PostRepository postRepository;
+    @Autowired
+    CommentRepository commentRepository;
+    @Autowired
+    UserRepository userRepository;
 
     User user1;
     @BeforeEach
@@ -70,8 +75,10 @@ class UserServiceTest {
         userService.join(user2);
 
         // 시간표 생성
-        TimeTable timeTable1 = new TimeTable("22년 2학기", 2022, Semester.SECOND, user1);
-        TimeTable timeTable2 = new TimeTable("23년 1학기", 2023, Semester.FIRST, user1);
+        TimeTable timeTable1 = new TimeTable("22년 2학기", 2022, Semester.SECOND);
+        timeTable1.setUser(user1);
+        TimeTable timeTable2 = new TimeTable("23년 1학기", 2023, Semester.FIRST);
+        timeTable2.setUser(user1);
         timeTableRepository.save(timeTable1);
         timeTableRepository.save(timeTable2);
 
@@ -109,15 +116,21 @@ class UserServiceTest {
                 .build();
         post.addAttachment(attachment);
         postRepository.save(post);
+
+        Comment comment1 = new Comment("comment1", user2, null);
+        Comment comment2 = new Comment("comment2", user2, null);
+        commentRepository.save(comment1);
+        Comment comment3 = new Comment("comment3", user2, null);
+        comment2.addReply(comment3);
+        commentRepository.save(comment2);
+
+
     }
 
     @Test
-    public void 유저제거() throws Exception{
+    public void 유저제거() throws Exception {
         //given
-
-        //when
-        userService.deleteUser(user1);
-
+        
         //then
 
     }

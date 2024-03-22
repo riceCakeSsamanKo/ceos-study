@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 @Entity
-@ToString
+@ToString(exclude = {"user"})
 public class TimeTable extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -36,16 +36,13 @@ public class TimeTable extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "user_id")
-    @Setter(value = PROTECTED)
-    @ToString.Exclude
+    @Setter
     private User user;
 
     @Builder
-    public TimeTable(String name, int year, Semester semester, User user) {
+    public TimeTable(String name, int year, Semester semester) {
         this.name = name;
         this.year = year;
         this.semester = semester;
-        this.user = user;
     }
-
 }

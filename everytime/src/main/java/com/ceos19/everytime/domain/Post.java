@@ -1,10 +1,7 @@
 package com.ceos19.everytime.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +13,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Getter
 @Entity
-@ToString
 public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -33,6 +29,7 @@ public class Post extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id") // join 한 user의 fk 명을 "user_id"로 지정. 연관관계 매핑에는 @JoinColumn은 영향을 주지 않음.
+    @Setter
     private User author;
 
     @ManyToOne(fetch = LAZY)
@@ -63,5 +60,10 @@ public class Post extends BaseTimeEntity {
     public void addAttachment(Attachment attachment) {
         attachment.setPost(this);
         attachments.add(attachment);
+    }
+
+    public void removeRelation() {
+        this.author = null;
+        this.board = null;
     }
 }

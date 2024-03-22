@@ -1,5 +1,6 @@
 package com.ceos19.everytime.service;
 
+import com.ceos19.everytime.domain.Course;
 import com.ceos19.everytime.domain.TimeTable;
 import com.ceos19.everytime.domain.TimeTableCourse;
 import com.ceos19.everytime.repository.TimeTableCourseRepository;
@@ -17,12 +18,6 @@ import java.util.Optional;
 public class TimeTableService {
     private final TimeTableRepository timeTableRepository;
     private final TimeTableCourseRepository timeTableCourseRepository;
-
-    @Transactional(readOnly = false)
-    public Long save(TimeTable timeTable) {
-        timeTableRepository.save(timeTable);
-        return timeTable.getId();
-    }
 
     @Transactional(readOnly = false)
     public void deleteTimeTable(TimeTable timeTable) {
@@ -53,5 +48,9 @@ public class TimeTableService {
             throw new NullPointerException("해당 TimeTable이 존재하지 않습니다");
         }
         return optionalTimeTable.get();
+    }
+
+    public List<TimeTable> findByUserId(Long userId) {
+        return timeTableRepository.findByUserId(userId);
     }
 }

@@ -36,13 +36,13 @@ public class TimeTable extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "user_id")
-    @Setter
     private User user;
 
     @Builder
-    public TimeTable(String name, int year, Semester semester) {
+    public TimeTable(String name, int year, Semester semester, User user) {
         this.name = name;
         this.year = year;
         this.semester = semester;
+        this.user = user;
     }
 }

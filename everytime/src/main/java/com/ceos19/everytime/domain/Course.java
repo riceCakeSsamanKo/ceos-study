@@ -11,6 +11,7 @@ import java.util.List;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
@@ -18,7 +19,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @ToString
 public class Course {
-    @Id @GeneratedValue(strategy = IDENTITY)
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "course_id")  // PK 값을 학수 번호로 설정
     private Long id;
 
@@ -34,16 +36,19 @@ public class Course {
     private int credit;
     @Column(nullable = false, length = 50)
     private String room;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "school_id")
+    private School school;
 
     @Builder
-    public Course(String courseNumber, String name, int openingGrade, String professorName, int credit, String room) {
+    public Course(String courseNumber, String name, int openingGrade, String professorName, int credit, String room, School school) {
         this.courseNumber = courseNumber;
         this.name = name;
         this.openingGrade = openingGrade;
         this.professorName = professorName;
         this.credit = credit;
         this.room = room;
-
+        this.school = school;
     }
 
     @OneToMany(mappedBy = "course", cascade = ALL, orphanRemoval = true)

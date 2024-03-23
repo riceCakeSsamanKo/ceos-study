@@ -41,9 +41,10 @@ class PostRepositoryTest {
     CommentRepository commentRepository;
 
     User user1;
+
     @BeforeEach
     public void each() {
-         // 학교 저장
+        // 학교 저장
         School school = new School("홍익대학교");
         schoolRepository.save(school);
 
@@ -54,7 +55,7 @@ class PostRepositoryTest {
         user1 = new User("myUsername", "myPassword", "김상덕", "A000011", "um@naver.com", school);
         userRepository.save(user1);
 
-        Post post = new Post("새로운 포스팅", "ㅈㄱㄴ", false, false, user1, board);
+        Post post = new Post("새로운 포스팅", "ㅈㄱㄴ", false, false, board, user1);
         post.addPostLike(user1);
         post.addPostLike(user1);
         post.addPostLike(user1);
@@ -69,27 +70,21 @@ class PostRepositoryTest {
         postRepository.save(post);
 
 
-        Comment comment1 = new Comment("ㅎㅇ요1", user1, post);
-        Comment comment2 = new Comment("ㅎㅇ요2", user1, post);
-        comment1.addReply(comment2);
-        Comment comment3 = new Comment("ㅎㅇ요3", user1, post);
+        Comment comment1 = new Comment("ㅎㅇ요1", user1, post, null);
+        Comment comment2 = new Comment("ㅎㅇ요2", user1, post, null);
+        Comment reply = new Comment("ㅎㅇ요3", user1, post, comment2);
         commentRepository.save(comment1);
-        commentRepository.save(comment3);
+        commentRepository.save(comment2);
     }
 
     @Test
-    public void 포스트제거() throws Exception{
+    public void 포스트제거() throws Exception {
         //given
         List<Post> byAuthorId = postRepository.findByAuthorId(user1.getId());
         for (Post post : byAuthorId) {
             List<Comment> comments = commentRepository.findByPostId(post.getId());
             for (Comment comment : comments) {
-                List<Comment> replies = comment.getReplies();
-                for (Comment reply : replies) {
-                    System.out.println("reply: "+reply.getId());
-                    reply.removeRelation();
-                }
-                comment.removeRelation();
+                comment.removeParentComment();
             }
             commentRepository.deleteAll(comments);
         }

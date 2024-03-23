@@ -8,16 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment,Long> {
-    @EntityGraph(attributePaths = {"post", "replies"})
+    @EntityGraph(attributePaths = {"post"})
     List<Comment> findByCommenterId(Long commenterId);
 
-    @EntityGraph(attributePaths = {"commenter", "replies"})
+    @EntityGraph(attributePaths = {"commenter"})
     List<Comment> findByPostId(Long postId);
 
-    @EntityGraph(attributePaths = {"commenter", "replies"})
+    @EntityGraph(attributePaths = {"commenter"})
     List<Comment> findByParentCommentId(Long parentCommentId);
-
-    void deleteAllByCommenterId(Long commenterId);
-
-    void deleteAllByPostId(Long PostId);
 }

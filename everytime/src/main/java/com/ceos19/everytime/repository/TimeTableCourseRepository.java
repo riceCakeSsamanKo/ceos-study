@@ -17,4 +17,6 @@ public interface TimeTableCourseRepository extends JpaRepository<TimeTableCourse
     List<TimeTableCourse> findByTimeTableId(Long timeTableId);  // 특정 TimeTable로 조회
 
     void deleteAllByTimeTableId(Long timeTableId);
+
+    void deleteAllByCourseId(Long courseId);
 }

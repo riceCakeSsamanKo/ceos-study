@@ -26,34 +26,26 @@ public class Comment extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
-    @Setter
     private User commenter;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
-    @Setter
     private Post post;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "parent_comment_id")
-    @Setter
     private Comment parentComment;
 
-    @OneToMany(mappedBy = "parentComment", cascade = ALL, orphanRemoval = true)
-    private List<Comment> replies = new ArrayList<>();
-
-    public void addReply(Comment comment) {
-        comment.parentComment = this;
-        replies.add(comment);
-    }
-
-    public Comment(String content, User commenter, Post post) {
+    public Comment(String content, User commenter, Post post, Comment parentComment) {
         this.content = content;
         this.commenter = commenter;
         this.post = post;
     }
 
     // 연관관계 제거
+    public void removeParentComment() {
+        this.parentComment = null;
+    }
     public void removeRelation() {
         commenter = null;
         post = null;

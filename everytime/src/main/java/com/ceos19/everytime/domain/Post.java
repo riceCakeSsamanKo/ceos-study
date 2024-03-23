@@ -29,7 +29,6 @@ public class Post extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id") // join 한 user의 fk 명을 "user_id"로 지정. 연관관계 매핑에는 @JoinColumn은 영향을 주지 않음.
-    @Setter
     private User author;
 
     @ManyToOne(fetch = LAZY)
@@ -37,13 +36,13 @@ public class Post extends BaseTimeEntity {
     private Board board;
 
     @Builder
-    public Post(String title, String content, boolean isQuestion, boolean isAnonymous, User author, Board board) {
+    public Post(String title, String content, boolean isQuestion, boolean isAnonymous, Board board, User author) {
         this.title = title;
         this.content = content;
         this.isQuestion = isQuestion;
         this.isAnonymous = isAnonymous;
-        this.author = author;
         this.board = board;
+        this.author = author;
     }
 
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)

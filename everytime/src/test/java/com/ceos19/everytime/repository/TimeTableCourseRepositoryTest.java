@@ -40,28 +40,27 @@ class TimeTableCourseRepositoryTest {
     TimeTable timeTable;
 
     @BeforeEach
-    public void each(){
+    public void each() {
         school = new School("schoolA");
         schoolRepository.save(school);
 
         userA = new User("userA@asdf.com", "password", "userA", "aaabbbc", "userA@asdf.com", school);
         userRepository.save(userA);
 
-        course1 = new Course("1234-567", "컴퓨터개론", 1, "김교수", 3, "t123");
-        course2 = new Course("1111-333", "엄준식개론", 3, "박교수", 2, "t123");
+        course1 = new Course("1234-567", "컴퓨터개론", 1, "김교수", 3, "t123", school);
+        course2 = new Course("1111-333", "엄준식개론", 3, "박교수", 2, "t123", school);
 
-        course1.addClassTime(Weekend.MON,2);
-        course1.addClassTime(Weekend.TUE,4);
-        course1.addClassTime(Weekend.TUE,5);
+        course1.addClassTime(Weekend.MON, 2);
+        course1.addClassTime(Weekend.TUE, 4);
+        course1.addClassTime(Weekend.TUE, 5);
         courseRepository.save(course1);
 
-        course2.addClassTime(Weekend.FRI,5);
+        course2.addClassTime(Weekend.FRI, 5);
         courseRepository.save(course2);
 
 //        course.getClassTimes().remove(0);
 
-        timeTable = new TimeTable("timeTable1", 2024, FIRST);
-        timeTable.setUser(userA);
+        timeTable = new TimeTable("timeTable1", 2024, FIRST, userA);
         timeTableRepository.save(timeTable);
 
         timeTableCourseRepository.save(new TimeTableCourse(timeTable, course1));

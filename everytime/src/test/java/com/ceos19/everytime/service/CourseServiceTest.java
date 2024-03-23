@@ -49,8 +49,9 @@ class CourseServiceTest {
         userA = new User("userA@asdf.com", "password", "userA", "aaabbbc", "userA@asdf.com", school);
         userRepository.save(userA);
 
-        course1 = new Course("1234-567", "컴퓨터개론", 1, "김교수", 3, "t123");
-        course2 = new Course("1111-333", "엄준식개론", 3, "박교수", 2, "t123");
+        course1 = new Course("1234-567", "컴퓨터개론", 1, "김교수", 3, "t123",school);
+        course2 = new Course("1111-333", "엄준식개론", 3, "박교수", 2, "t123",school);
+        course2 = new Course("1111-333", "엄준식개론", 3, "엄교수", 2, "t123",school);
 
         course1.addClassTime(Weekend.MON,2);
         course1.addClassTime(Weekend.TUE,4);
@@ -62,8 +63,7 @@ class CourseServiceTest {
 
 //        course.getClassTimes().remove(0);
 
-        TimeTable timeTable = new TimeTable("timeTable1", 2024, FIRST);
-        timeTable.setUser(userA);
+        TimeTable timeTable = new TimeTable("timeTable1", 2024, FIRST,userA);
         timeTableRepository.save(timeTable);
 
         timeTableCourseRepository.save(new TimeTableCourse(timeTable, course1));
@@ -89,5 +89,26 @@ class CourseServiceTest {
         for (TimeTableCourse timeTableCourse : byTimeTableId) {
             System.out.println("timetable timeTableCourse = " + timeTableCourse.getCourse());
         }
+    }
+
+    @Test
+    public void findCourse() throws Exception{
+        //given
+        List<Course> courses = courseService.findByNameAndProfessorName(school.getId(), "컴퓨터개론", "김교수");
+
+        //when
+
+        //then
+        assertEquals(courses.size(),1);
+    }
+
+    @Test
+    public void findCourse2() throws Exception{
+        //given
+        List<Course> courses = courseService.findByName(school.getId(), "엄준식개론");
+        //when
+
+        //then
+        assertEquals(courses.size(),2);
     }
 }

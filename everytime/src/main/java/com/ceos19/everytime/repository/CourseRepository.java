@@ -15,11 +15,17 @@ public interface CourseRepository extends JpaRepository<Course,Long> {
     List<Course> findByCourseNumber(String courseNumber);
 
     @EntityGraph(attributePaths = {"classTimes"})
-    List<Course> findByName(String name);
+    List<Course> findBySchoolIdAndName(Long schoolId, String name);
 
     @EntityGraph(attributePaths = {"classTimes"})
-    List<Course> findByOpeningGrade(int openingGrade);
+    List<Course> findBySchoolIdAndOpeningGrade(Long schoolId, int openingGrade);
 
     @EntityGraph(attributePaths = {"classTimes"})
-    List<Course> findByProfessorName(String professorName);
+    List<Course> findBySchoolIdAndProfessorName(Long schoolId, String professorName);
+
+    @EntityGraph(attributePaths = {"classTimes"})
+    List<Course> findBySchoolIdAndNameAndProfessorName(Long schoolId, String name, String professorName);
+
+    @EntityGraph(attributePaths = {"classTimes"})
+    List<Course> findBySchoolIdAndCourseNumber(Long schoolId, String courseNo);
 }

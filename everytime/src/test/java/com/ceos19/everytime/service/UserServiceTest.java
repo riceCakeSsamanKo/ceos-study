@@ -2,7 +2,6 @@ package com.ceos19.everytime.service;
 
 import static com.ceos19.everytime.domain.Weekend.FRI;
 import static com.ceos19.everytime.domain.Weekend.TUE;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.ceos19.everytime.domain.*;
 import com.ceos19.everytime.repository.*;
@@ -13,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Scanner;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -56,12 +52,12 @@ class UserServiceTest {
         boardRepository.save(board);
 
         // 과목 저장
-        Course course1 = new Course("1234-123", "갈비탕개론", 2, "미스터갈비탕교수", 3, "t123");
+        Course course1 = new Course("1234-123", "갈비탕개론", 2, "미스터갈비탕교수", 3, "t123",school);
         course1.addClassTime(FRI, 5);
         course1.addClassTime(FRI, 6);
         course1.addClassTime(FRI, 7);
 
-        Course course2 = new Course("4321-123", "라면학개론", 4, "미스터라면교수", 3, "t203");
+        Course course2 = new Course("4321-123", "라면학개론", 4, "미스터라면교수", 3, "t203",school);
         course2.addClassTime(TUE, 3);
         course2.addClassTime(TUE, 4);
         course2.addClassTime(TUE, 6);
@@ -71,14 +67,12 @@ class UserServiceTest {
         // 유저 가입
         user1 = new User("myUsername", "myPassword", "김상덕", "A000011", "um@naver.com", school);
         userService.join(user1);
-        User user2 = new User("yourUsername", "myPassword", "김상덕", "A000011", "um@naver.com", school);
+        User user2 = new User("yourUsername", "myPassword", "김상덕", "A000012", "um1@naver.com", school);
         userService.join(user2);
 
         // 시간표 생성
-        TimeTable timeTable1 = new TimeTable("22년 2학기", 2022, Semester.SECOND);
-        timeTable1.setUser(user1);
-        TimeTable timeTable2 = new TimeTable("23년 1학기", 2023, Semester.FIRST);
-        timeTable2.setUser(user1);
+        TimeTable timeTable1 = new TimeTable("22년 2학기", 2022, Semester.SECOND, user1);
+        TimeTable timeTable2 = new TimeTable("23년 1학기", 2023, Semester.FIRST, user1);
         timeTableRepository.save(timeTable1);
         timeTableRepository.save(timeTable2);
 
@@ -103,7 +97,7 @@ class UserServiceTest {
         chatRepository.save(chat3);
 
         // Post 생성
-        Post post = new Post("새로운 포스팅", "ㅈㄱㄴ", false, false, user1, board);
+        Post post = new Post("새로운 포스팅", "ㅈㄱㄴ", false, false, board,user1);
         // Post에 좋아요 추가
         post.addPostLike(user1);
         post.addPostLike(user2);
@@ -117,11 +111,10 @@ class UserServiceTest {
         post.addAttachment(attachment);
         postRepository.save(post);
 
-        Comment comment1 = new Comment("comment1", user2, null);
-        Comment comment2 = new Comment("comment2", user2, null);
+        Comment comment1 = new Comment("comment1", user2, null,null);
+        Comment comment2 = new Comment("comment2", user2, null,null);
         commentRepository.save(comment1);
-        Comment comment3 = new Comment("comment3", user2, null);
-        comment2.addReply(comment3);
+        Comment reply = new Comment("reply", user2, null,comment2);
         commentRepository.save(comment2);
 
 

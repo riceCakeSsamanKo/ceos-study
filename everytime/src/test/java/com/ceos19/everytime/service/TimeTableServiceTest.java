@@ -44,8 +44,8 @@ public class TimeTableServiceTest {
         User userA = new User("userA@asdf.com", "password", "userA", "aaabbbc", "userA@asdf.com", school);
         userRepository.save(userA);
 
-        Course course1 = new Course("1234-567", "컴퓨터개론", 1, "김교수", 3, "t123");
-        Course course2 = new Course("1111-333", "엄준식개론", 3, "박교수", 2, "t123");
+        Course course1 = new Course("1234-567", "컴퓨터개론", 1, "김교수", 3, "t123",school);
+        Course course2 = new Course("1111-333", "엄준식개론", 3, "박교수", 2, "t123",school);
 
         course1.addClassTime(Weekend.MON, 2);
         course1.addClassTime(Weekend.TUE, 4);

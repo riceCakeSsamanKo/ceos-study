@@ -73,7 +73,7 @@ public class CourseService {
         if (schoolRepository.findById(schoolId).isEmpty()) {
             log.error("에러 내용: 학교 조회 실패 " +
                     "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 학교입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 학교입니다");
         }
         return courseRepository.findBySchoolIdAndProfessorName(schoolId, professorName);
     }
@@ -83,7 +83,7 @@ public class CourseService {
         if (schoolRepository.findById(schoolId).isEmpty()) {
             log.error("에러 내용: 학교 조회 실패 " +
                     "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 학교입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 학교입니다");
         }
         return courseRepository.findBySchoolIdAndNameAndProfessorName(schoolId, name, professorName);
     }
@@ -93,12 +93,19 @@ public class CourseService {
         if (schoolRepository.findById(schoolId).isEmpty()) {
             log.error("에러 내용: 학교 조회 실패 " +
                     "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 학교입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 학교입니다");
         }
         return courseRepository.findBySchoolIdAndName(schoolId, name);
     }
 
+
     public void deleteCourseById(Long courseId) {
+        Optional<Course> optionalCourse = courseRepository.findById(courseId);
+        if (optionalCourse.isEmpty()) {
+            log.error("에러 내용: 시간표 조회 실패 " +
+                    "발생 원인: 존재하지 않는 PK 값으로 조회");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 시간표입니다");
+        }
         // 연관 관계 제거
         timeTableCourseRepository.deleteAllByCourseId(courseId);
 

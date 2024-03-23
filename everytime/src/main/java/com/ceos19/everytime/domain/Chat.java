@@ -13,7 +13,6 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 @Entity
-@ToString
 public class Chat{
     @Id
     @GeneratedValue(strategy = IDENTITY)

@@ -56,9 +56,7 @@ class PostRepositoryTest {
         userRepository.save(user1);
 
         Post post = new Post("새로운 포스팅", "ㅈㄱㄴ", false, false, board, user1);
-        post.addPostLike(user1);
-        post.addPostLike(user1);
-        post.addPostLike(user1);
+
 
         Attachment attachment = Attachment.builder()
                 .originFileName("original")

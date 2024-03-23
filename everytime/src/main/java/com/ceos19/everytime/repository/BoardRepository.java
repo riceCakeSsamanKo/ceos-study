@@ -10,4 +10,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Optional<Board> findById(Long boardId);
 
     List<Board> findBySchoolId(Long schoolId);
+    Optional<Board> findBySchoolIdAndName(Long schoolId,String name);
 }

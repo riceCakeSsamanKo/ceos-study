@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ceos19.everytime.exception.ErrorCode.DATA_NOT_FOUND;
+import static com.ceos19.everytime.exception.ErrorCode.NO_DATA_EXISTED;
 
 @Service
 @Transactional
@@ -32,7 +32,7 @@ public class CommentService {
         if (optionalComment.isEmpty()) {
             log.error("에러 내용: 댓글 조회 실패 " +
                     "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 댓글입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 댓글입니다");
         }
         return optionalComment.get();
     }
@@ -52,9 +52,16 @@ public class CommentService {
         return commentRepository.findByCommenterId(commenterId);
     }
 
-    public void deleteComment(Long commentId) {
-        List<Comment> replies = commentRepository.findByParentCommentId(commentId);
 
+    public void deleteComment(Long commentId) {
+        Optional<Comment> optionalComment = commentRepository.findById(commentId);
+        if (optionalComment.isEmpty()) {
+            log.error("에러 내용: 댓글 조회 실패 " +
+                    "발생 원인: 존재하지 않는 PK 값으로 조회");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 댓글입니다");
+        }
+
+        List<Comment> replies = commentRepository.findByParentCommentId(commentId);
         // 연관관계 제거
         for (Comment reply : replies) {
             reply.removeParentComment();

@@ -46,17 +46,12 @@ public class Post extends BaseTimeEntity {
     }
 
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-    private List<PostLike> postLikes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private List<Attachment> attachments = new ArrayList<>();
 
-    public void addPostLike(User user) {
-        PostLike postLike = new PostLike(this, user);
-        postLikes.add(postLike);
-    }
-
     public void addAttachment(Attachment attachment) {
+        if (attachment.getId() != null) {
+            return;  // 등록불가
+        }
         attachment.setPost(this);
         attachments.add(attachment);
     }

@@ -1,11 +1,10 @@
 package com.ceos19.everytime.service;
 
-import com.ceos19.everytime.domain.Comment;
-import com.ceos19.everytime.domain.Post;
-import com.ceos19.everytime.domain.User;
+import com.ceos19.everytime.domain.*;
 import com.ceos19.everytime.exception.AppException;
 import com.ceos19.everytime.exception.ErrorCode;
 import com.ceos19.everytime.repository.CommentRepository;
+import com.ceos19.everytime.repository.PostLikeRepository;
 import com.ceos19.everytime.repository.PostRepository;
 import com.ceos19.everytime.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ceos19.everytime.exception.ErrorCode.DATA_NOT_FOUND;
+import static com.ceos19.everytime.exception.ErrorCode.*;
 
 
 @Service
@@ -27,9 +26,18 @@ public class PostService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
 
-    public Long save(Post post) {
+    public Long save(Post post, Attachment... attachments) {
         postRepository.save(post);
+        for (Attachment attachment : attachments) {
+            if (attachment.getId() != null) {
+                log.error("에러 내용: 게시물 등록 실패 " +
+                    "발생 원인: 이미 다른 곳에 등록된 파일을 해당 게시물에 재 등록함");
+                throw new AppException(DATA_ALREADY_EXISTED, "이미 등록된 파일입니다");
+            }
+            post.addAttachment(attachment);
+        }
         return post.getId();
     }
 
@@ -38,7 +46,7 @@ public class PostService {
         if (optionalPost.isEmpty()) {
             log.error("에러 내용: 게시물 조회 실패 " +
                     "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 게시물입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 게시물입니다");
         }
         return optionalPost.get();
     }
@@ -52,7 +60,7 @@ public class PostService {
         if (optionalPost.isEmpty()) {
             log.error("에러 내용: 게시물 조회 실패 " +
                     "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 게시물입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 게시물입니다");
         }
 
         // 연관관계 제거
@@ -61,6 +69,9 @@ public class PostService {
             comment.removeParentComment();
         }
         commentRepository.deleteAll(comments);
+
+        // 연관관계 제거
+        postLikeRepository.deleteAllByPostId(postId);
 
         postRepository.deleteById(postId);
     }

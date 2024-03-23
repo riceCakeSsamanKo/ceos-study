@@ -53,7 +53,7 @@ public class UserService {
         if (optionalUser.isEmpty()) {
             log.error("에러 내용: 유저 조회 실패 " +
                     "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 유저입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 유저입니다");
         }
         return optionalUser.get();
     }
@@ -64,7 +64,7 @@ public class UserService {
         if (optionalUser.isEmpty()) {
             log.error("에러 내용: 유저 조회 실패 " +
                     "발생 원인: 존재하지 않는 아이디 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 유저입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 유저입니다");
         }
 
         return optionalUser.get();
@@ -76,116 +76,20 @@ public class UserService {
         if (optionalUser.isEmpty()) {
             log.error("에러 내용: 유저 조회 실패 " +
                     "발생 원인: 존재하지 않는 이메일 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 유저입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 유저입니다");
         }
         return optionalUser.get();
     }
 
     @Transactional(readOnly = true)
-    public User findBySchoolAndStudentNo(School school, String studentNo) {
-        Optional<User> optionalUser = userRepository.findBySchoolIdAndStudentNo(school.getId(), studentNo);
+    public User findBySchoolIdAndStudentNo(Long schoolId, String studentNo) {
+        Optional<User> optionalUser = userRepository.findBySchoolIdAndStudentNo(schoolId, studentNo);
         if (optionalUser.isEmpty()) {
             log.error("에러 내용: 유저 조회 실패 " +
                     "발생 원인: 존재하지 않는 학교, 학번으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 유저입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 유저입니다");
         }
         return optionalUser.get();
     }
 
-
-    /**
-     * 업데이트 로직
-     */
-    public void updatePassword(Long userId, String password) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isEmpty()) {
-            log.error("에러 내용: 유저 조회 실패 " +
-                    "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 유저입니다");
-        }
-        User user = optionalUser.get();
-        user.updatePassword(password);
-    }
-
-    public void updateName(Long userId, String name) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isEmpty()) {
-            log.error("에러 내용: 유저 조회 실패 " +
-                    "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 유저입니다");
-        }
-        User user = optionalUser.get();
-        user.updateName(name);
-    }
-
-    public void updateEmail(Long userId, String email) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isEmpty()) {
-            log.error("에러 내용: 유저 조회 실패 " +
-                    "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 유저입니다");
-        }
-        User user = optionalUser.get();
-        user.updateEmail(email);
-    }
-
-    public void updateSchool(Long userId, Long schoolId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isEmpty()) {
-            log.error("에러 내용: 유저 조회 실패 " +
-                    "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 유저입니다");
-        }
-        User user = optionalUser.get();
-        Optional<School> optionalSchool = schoolRepository.findById(schoolId);
-        if (optionalSchool.isEmpty()) {
-            log.error("에러 내용: 학교 조회 실패 " +
-                    "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 학교입니다");
-        }
-        School school = optionalSchool.get();
-        user.updateSchool(school);
-    }
-
-
-
-
-
-
-
-     /* 기능 이상
-     public void deleteUser(User user) {
-        // 연관된 Chat 제거
-        List<ChattingRoom> chattingRooms =
-                chattingRoomRepository.findByParticipant1IdOrParticipant2Id(user.getId());
-        for (ChattingRoom chattingRoom : chattingRooms) {
-            chatRepository.deleteAllByChattingRoomId(chattingRoom.getId());
-        }
-        // 연관된 ChattingRoom 제거
-        chattingRoomRepository.deleteAll(chattingRooms);
-
-        // 연관된 TimeTableCourse 제거
-        List<TimeTable> timeTables = timeTableRepository.findByUserId(user.getId());
-        for (TimeTable timeTable : timeTables) {
-            timeTableCourseRepository.deleteAllByTimeTableId(timeTable.getId());
-        }
-        // 연관된 TimeTable 제거
-        timeTableRepository.deleteAll(timeTables); // 연관된 TimeTableCourse도 cascade로 제거
-
-        // 유저와 연관된 Comment 제거
-        List<Comment> comments = commentRepository.findByCommenterId(user.getId());
-        commentRepository.deleteAll(comments);
-
-        // Post와 연관된 Comment 제거
-        List<Post> posts = postRepository.findByAuthorId(user.getId());
-        for (Post post : posts) {
-            List<Comment> commentsInPost = commentRepository.findByPostId(post.getId());
-            commentRepository.deleteAll(commentsInPost);
-        }
-        //연관된 Post 제거
-        postRepository.deleteAll(posts);
-
-        // User 제거
-        userRepository.delete(user);
-    }*/
 }

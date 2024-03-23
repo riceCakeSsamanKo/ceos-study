@@ -5,6 +5,8 @@ import static com.ceos19.everytime.domain.Weekend.TUE;
 
 import com.ceos19.everytime.domain.*;
 import com.ceos19.everytime.repository.*;
+import jakarta.persistence.EntityManager;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +41,8 @@ class UserServiceTest {
     CommentRepository commentRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    EntityManager em;
 
     User user1;
     @BeforeEach
@@ -99,8 +103,6 @@ class UserServiceTest {
         // Post 생성
         Post post = new Post("새로운 포스팅", "ㅈㄱㄴ", false, false, board,user1);
         // Post에 좋아요 추가
-        post.addPostLike(user1);
-        post.addPostLike(user2);
 
         // Post에 사진 추가
         Attachment attachment = Attachment.builder()
@@ -121,10 +123,12 @@ class UserServiceTest {
     }
 
     @Test
-    public void 유저제거() throws Exception {
-        //given
-        
-        //then
+    public void 유저이름변경() throws Exception {
+        User user = userService.findById(user1.getId());
+        user.updateName("업데이트이름");
+        em.flush();
+        em.clear();
 
+        Assert.assertEquals(userService.findById(user1.getId()).getName(), "업데이트이름");
     }
 }

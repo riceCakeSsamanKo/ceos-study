@@ -14,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ceos19.everytime.exception.ErrorCode.DATA_ALREADY_EXISTED;
-import static com.ceos19.everytime.exception.ErrorCode.DATA_NOT_FOUND;
+import static com.ceos19.everytime.exception.ErrorCode.*;
 
 @Service
 @Transactional
@@ -50,7 +49,7 @@ public class TimeTableService {
         if (optionalTimeTable.isEmpty()) {
             log.error("에러 내용: 시간표 조회 실패 " +
                     "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 시간표입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 시간표입니다");
         }
         return optionalTimeTable.get();
     }
@@ -71,17 +70,18 @@ public class TimeTableService {
         if (optionalTimeTable.isEmpty()) {
             log.error("에러 내용: 시간표 조회 실패 " +
                     "발생 원인: 조건에 맞는 시간표 존재 안함");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 시간표입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 시간표입니다");
         }
         return optionalTimeTable.get();
     }
+
 
     public void deleteTimeTable(Long timeTableId) {
         Optional<TimeTable> optionalTimeTable = timeTableRepository.findById(timeTableId);
         if (optionalTimeTable.isEmpty()) {
             log.error("에러 내용: 시간표 조회 실패 " +
                     "발생 원인: 존재하지 않는 PK 값으로 조회");
-            throw new AppException(DATA_NOT_FOUND, "존재하지 않는 시간표입니다");
+            throw new AppException(NO_DATA_EXISTED, "존재하지 않는 시간표입니다");
         }
 
         // 연관관계 제거
@@ -90,4 +90,5 @@ public class TimeTableService {
         // timeTable 제거
         timeTableRepository.deleteById(timeTableId);
     }
+
 }

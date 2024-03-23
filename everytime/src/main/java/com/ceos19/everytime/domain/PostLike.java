@@ -1,13 +1,11 @@
 package com.ceos19.everytime.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PRIVATE;
 
 @Getter
 @NoArgsConstructor
@@ -21,15 +19,18 @@ public class PostLike {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
+    @Setter(value = PRIVATE)
     private Post post;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
+    @Setter(value = PRIVATE)
     private User user;
 
-    @Builder
-    protected PostLike(Post post, User user) {
-        this.post = post;
-        this.user = user;
+    public static PostLike createPostLike(Post post, User user) {
+        PostLike postLike = new PostLike();
+        postLike.setPost(post);
+        postLike.setUser(user);
+        return postLike;
     }
 }

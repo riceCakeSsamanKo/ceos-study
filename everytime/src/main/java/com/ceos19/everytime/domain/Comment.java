@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
-@ToString(exclude = {"commenter", "post", "parentComment", "replies"})
+@ToString(exclude = {"commenter", "post", "parentComment"})
 public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)

@@ -45,4 +45,11 @@ public class TimeTable extends BaseTimeEntity {
         this.semester = semester;
         this.user = user;
     }
+
+    /**
+     * 업데이트 로직
+     */
+    public void updateName(String name) {
+        this.name = name;
+    }
 }

@@ -33,8 +33,7 @@ public class Attachment {  // 게시물에 달 사진
     private Post post;
 
     @Builder
-    public Attachment(Long id, String originFileName, String storePath, AttachmentType attachmentType) {
-        this.id = id;
+    public Attachment(String originFileName, String storePath, AttachmentType attachmentType) {
         this.originalFileName = originFileName;
         this.storedPath = storePath;
         this.attachmentType = attachmentType;

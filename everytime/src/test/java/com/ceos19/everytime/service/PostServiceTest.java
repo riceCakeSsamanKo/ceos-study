@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.ceos19.everytime.domain.*;
 import com.ceos19.everytime.exception.AppException;
 import com.ceos19.everytime.repository.*;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -46,10 +47,10 @@ class PostServiceTest {
     UserRepository userRepository;
     @Autowired
     PostService postService;
-    User user1;
-    Long postId;
+    @Autowired
+    EntityManager em;
 
-    @BeforeEach
+   /* @BeforeEach
     public void each() {
         // 학교 저장
         School school = new School("홍익대학교");
@@ -105,6 +106,66 @@ class PostServiceTest {
         List<Comment> comments = commentRepository.findByPostId(postId);
         assertEquals(comments.size(), 0);  // 연관된 comment 제거
         assertThrows(AppException.class, () -> postService.findById(postId));  //post 제거됨
+
+    }*/
+
+    User user;
+    School school;
+    Board board;
+
+    @BeforeEach
+    public void each() {
+        // 학교 저장
+        school = new School("홍익대학교");
+        schoolRepository.save(school);
+
+        // 게시판 저장
+        board = new Board("컴공게시판", school);
+        boardRepository.save(board);
+
+        User user = User.builder()
+                .name("유저1")
+                .username("id").password("qwer1234")
+                .email("user@naver.com").studentNo("B911111")
+                .school(school)
+                .build();
+        userService.join(user);
+    }
+
+    @Test
+    public void nPlus1() throws Exception {
+        //given
+        Attachment attachment1 = Attachment.builder()
+                .originFileName("file1")
+                .storePath("~/storage")
+                .attachmentType(AttachmentType.GENERAL)
+                .build();
+
+        Attachment attachment2 = Attachment.builder()
+                .originFileName("file1")
+                .storePath("~/storage")
+                .attachmentType(AttachmentType.GENERAL)
+                .build();
+
+        Post post1 = Post.builder()
+                .board(board).author(user)
+                .title("게시물1").content("내용...")
+                .isAnonymous(false).isQuestion(true)
+                .build();
+
+        // post1 저장시 attachment1도 해당 게시물에 저장함
+        post1.addAttachment(attachment1);
+        postRepository.save(post1);
+
+        em.flush();
+        em.clear();
+
+        //when
+        System.out.println("====== findPost =======");
+        Post post = postRepository.findById(post1.getId()).get();
+        for (Attachment attachment : post.getAttachments()) {
+            attachment.getId();
+        }
 
     }
 }

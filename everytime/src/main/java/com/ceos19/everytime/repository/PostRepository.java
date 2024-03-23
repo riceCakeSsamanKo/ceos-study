@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 @Transactional
 public interface PostRepository extends JpaRepository<Post, Long> {
-    @EntityGraph(attributePaths = {"author", "attachments"})
+//    @EntityGraph(attributePaths = {"author", "attachments"})
     Optional<Post> findById(Long postId);
 
     @EntityGraph(attributePaths = {"author", "attachments"})

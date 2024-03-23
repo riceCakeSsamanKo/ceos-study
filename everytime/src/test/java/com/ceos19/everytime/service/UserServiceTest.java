@@ -43,25 +43,29 @@ class UserServiceTest {
     UserRepository userRepository;
     @Autowired
     EntityManager em;
+    @Autowired
+    PostService postService;
 
     User user1;
+    School school;
+    Board board;
     @BeforeEach
     public void each() {
         // 학교 저장
-        School school = new School("홍익대학교");
+        school = new School("홍익대학교");
         schoolRepository.save(school);
 
         // 게시판 저장
-        Board board = new Board("컴공게시판", school);
+        board = new Board("컴공게시판", school);
         boardRepository.save(board);
 
         // 과목 저장
-        Course course1 = new Course("1234-123", "갈비탕개론", 2, "미스터갈비탕교수", 3, "t123",school);
+        Course course1 = new Course("1234-123", "갈비탕개론", 2, "미스터갈비탕교수", 3, "t123", school);
         course1.addClassTime(FRI, 5);
         course1.addClassTime(FRI, 6);
         course1.addClassTime(FRI, 7);
 
-        Course course2 = new Course("4321-123", "라면학개론", 4, "미스터라면교수", 3, "t203",school);
+        Course course2 = new Course("4321-123", "라면학개론", 4, "미스터라면교수", 3, "t203", school);
         course2.addClassTime(TUE, 3);
         course2.addClassTime(TUE, 4);
         course2.addClassTime(TUE, 6);
@@ -101,7 +105,7 @@ class UserServiceTest {
         chatRepository.save(chat3);
 
         // Post 생성
-        Post post = new Post("새로운 포스팅", "ㅈㄱㄴ", false, false, board,user1);
+        Post post = new Post("새로운 포스팅", "ㅈㄱㄴ", false, false, board, user1);
         // Post에 좋아요 추가
 
         // Post에 사진 추가
@@ -113,10 +117,10 @@ class UserServiceTest {
         post.addAttachment(attachment);
         postRepository.save(post);
 
-        Comment comment1 = new Comment("comment1", user2, null,null);
-        Comment comment2 = new Comment("comment2", user2, null,null);
+        Comment comment1 = new Comment("comment1", user2, null, null);
+        Comment comment2 = new Comment("comment2", user2, null, null);
         commentRepository.save(comment1);
-        Comment reply = new Comment("reply", user2, null,comment2);
+        Comment reply = new Comment("reply", user2, null, comment2);
         commentRepository.save(comment2);
 
 
